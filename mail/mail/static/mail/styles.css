@@ -1,0 +1,11 @@
+textarea {
+    min-height: 400px;
+}
+
+.DivContent {
+    height: 45px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    cursor: pointer;
+}

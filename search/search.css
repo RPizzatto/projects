@@ -1,0 +1,73 @@
+#botao{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 18px;
+}
+
+.field{
+    margin-bottom: 8px;
+    border-radius: 25px;
+    width: 42%;
+    height: 36px;
+}
+
+.logo{
+    width: 30%;
+    margin-top: 110px;
+
+}
+
+.imagem{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#links{
+    display: flex;
+    align-items:flex-end;
+    justify-content: end;
+    
+}
+
+#botao2{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#sorte{
+    margin-left: 8px;
+}
+
+.advanced{
+    display: flex;
+    flex-direction: row;
+    height: 25px;
+    margin-top: 10px;
+    width: 60%;
+}
+
+.botao_advanced{
+    height: 25px;
+    width: 65%;
+}
+
+.paragrafo{
+    width: 35%;
+    margin-left: 10px;
+}
+
+#vermelho{
+    margin-left: 10px;
+    color: red;
+    font-weight: bold;
+}
+
+.link{
+    margin-right: 15px;
+}

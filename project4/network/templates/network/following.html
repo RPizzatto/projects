@@ -1,0 +1,152 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+      
+
+    <ul class="list-group">
+        {% for post in page_posts %}
+            <li class="list-group-item" data-post-id="{{ post.id }}">
+                <a href="{% url 'profile' user=post.author %}">{{post.author}}</a>
+                <p id="content_{{post.id}}">{{post.comment_content}}</p>
+                <p>{{post.date}}</p>
+                <p id="number_of_likes_{{post.id}}"></p>
+                
+                {% if post.author == user %}
+                    <button onclick="Edit({{post.id}})" id="edit_button_{{post.id}}" class="btn btn-primary my-1">Edit</button>
+                    <div id="div_to_edit_{{post.id}}">
+
+                    </div>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    <div id="post_like_{{post.id}}">
+                        {% if post.id in likes %}
+                        <button onclick="Remove_like({{post.id}})" id="remove_like_button_{{post.id}}" class="btn btn-success">Unlike</button>
+                        {% else %}
+                        <button onclick="Add_like({{post.id}})" id="add_like_button_{{post.id}}" class="btn btn-success">Like</button>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_posts.has_previous %}
+                <a href="?page=1">&laquo; First</a>
+                <a href="?page={{ page_posts.previous_page_number }}">Previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ page_posts.number }} of {{ page_posts.paginator.num_pages }}.
+            </span>
+    
+            {% if page_posts.has_next %}
+                <a href="?page={{ page_posts.next_page_number }}">Next</a>
+                <a href="?page={{ page_posts.paginator.num_pages }}">Last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    
+<script>
+    function Edit(id){
+        let button = document.querySelector(`#edit_button_${id}`)
+        button.style.display = 'none'
+        let post_content = document.querySelector(`#content_${id}`)
+        let div_to_edit = document.querySelector(`#div_to_edit_${id}`)
+        div_to_edit.innerHTML = `
+            <textarea id="new_content_${id}">${post_content.innerText}</textarea>
+            <button onclick="Save_edit(${id})" id="button_${id}" class="btn btn-primary">Save</button>`
+        
+    }
+    function Save_edit(id){
+       let new_content = document.querySelector(`#new_content_${id}`).value
+       fetch(`/edit/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                new_content:new_content
+            })
+        })
+        .then(response => {
+            let textarea = document.querySelector(`#new_content_${id}`)
+            let button = document.querySelector(`#button_${id}`)
+            let button2 = document.querySelector(`#edit_button_${id}`)
+
+            button.style.display = 'none'
+            textarea.style.display = 'none'
+            button2.style.display = 'block'
+            let updated_content = document.querySelector(`#content_${id}`)
+            updated_content.innerHTML = new_content
+        })
+              
+    }
+
+    function Add_like(id){
+        fetch(`/add_like`, {
+            method: 'POST',
+            body: JSON.stringify({
+                id:id
+            })
+        })
+        .then(response => {
+            let like_button = document.querySelector(`#add_like_button_${id}`)
+            let div = document.querySelector(`#post_like_${id}`)
+            like_button.style.display = 'none'
+            div.innerHTML = ` <button onclick="Remove_like(${id})" id="remove_like_button_${id}" class="btn btn-success">Unlike</button>`
+            Count_likes(id)
+        })
+    }
+
+    function Remove_like(id){
+        fetch(`/remove_like`, {
+            method: 'POST',
+            body: JSON.stringify({
+                id:id
+            })      
+        })
+        .then(response => {
+            let unlike_button = document.querySelector(`#remove_like_button_${id}`)
+            let div = document.querySelector(`#post_like_${id}`)
+            unlike_button.style.display = 'none'
+            div.innerHTML = ` <button onclick="Add_like(${id})" id="add_like_button_${id}" class="btn btn-success">Like</button>`
+            Count_likes(id)
+        })
+    }
+    
+
+    function Count_likes(id){
+        fetch(`/like_counter/${id}`, {
+        method: 'GET'            
+        })
+        .then(response => response.json())
+        .then(result => {
+            let p = document.querySelector(`#number_of_likes_${id}`)
+            p.innerHTML = `Likes: ${result.current_likes}`
+        })
+    }
+
+    document.addEventListener('DOMContentLoaded', function(){
+        let postElements = document.querySelectorAll('.list-group-item[data-post-id]'); 
+        postElements.forEach(function(postElement){ 
+            let postId = postElement.getAttribute('data-post-id'); 
+            Count_likes(postId); 
+        });
+        
+        })
+    
+    
+
+
+</script>
+
+
+
+
+
+    {% endif %}
+
+    
+    
+{% endblock %}
