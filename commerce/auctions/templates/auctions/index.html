@@ -1,0 +1,42 @@
+{% extends "auctions/layout.html" %}
+{% load humanize %}
+
+{% block body %}
+    <form action = "{% url 'display_category' %}" method="post">
+        {% csrf_token %}
+        <label for="category">Filter by Category:</label>
+
+            <select class="dropdown" name="category" id="category">
+                <option class="dropdown-item" value="Sport" disabled selected>Select</option>
+                <option class="dropdown-item" value="Sport">Sport</option>
+                <option class="dropdown-item" value="SUV">SUV</option>
+                <option class="dropdown-item" value="Compact">Compact</option>
+                <option class="dropdown-item" value="Family">Family</option>
+            </select>
+        <input type="submit" value="Filter" class="btn btn-success">
+    </form>
+    <div class="container overflow-hidden text-center">
+        <div class="row gx-5">
+            {% for item in active_listing%}
+    
+                <div class="col">
+                    <div class="p-3">
+                        <div class="card" style="width: 18rem;">
+                            <img src="{{item.image}}" class="card-img-top" style="height: 200px; width: 100%; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">{{item.title}}</h5>
+                                
+                                <p class="card-text">{{item.starting_bid|floatformat:"0"|intcomma}}</p>
+                                <a href="{% url 'listing' listing_id=item.id %}" class="btn btn-primary">More Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    
+    
+{% endblock %}
+

@@ -1,0 +1,26 @@
+{% extends "auctions/layout.html" %}
+{% load humanize %}
+
+{% block body %}
+<div class="container overflow-hidden text-center">
+    <div class="row gx-5">
+        {% for item in user_watchlist%}
+
+            <div class="col">
+                <div class="p-3">
+                    <div class="card" style="width: 18rem;">
+                        <img src="{{item.item.image}}" class="card-img-top" style="height: 200px; width: 100%; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{item.item.title}}</h5>
+                            <p class="card-text">{{item.item.description}}</p>
+                            <p class="card-text">{{item.item.starting_bid|floatformat:"0"|intcomma}}</p>
+                            <a href="{% url 'listing' listing_id=item.item.id %}" class="btn btn-primary">More Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+

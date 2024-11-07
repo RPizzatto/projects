@@ -1,0 +1,86 @@
+{% extends "auctions/layout.html" %}
+{% load humanize %}
+
+
+{% block body %}
+
+    <h2>Listing Details</h2>
+
+    {% if winning_message == True %}
+    <p>Congratulations! You won this bid!</p>
+    {% endif %}
+
+    {% if selling_button  == True %}
+    <a href="{% url 'close_auction'  listing_id=listing_data.id %}" class="btn btn-danger">Complete Auction</a>
+    
+    
+    {% endif %}
+    <ul class="list-group">
+        <li class="list-group-item">Model: {{listing_data.title}}</li>
+        <li class="list-group-item">Details: {{listing_data.description}}</li>
+        <li class="list-group-item">Initial Bid: {{listing_data.starting_bid|floatformat:"0"|intcomma}}</li>
+        <li class="list-group-item">Current Bid: {{last_bid_value|floatformat:"0"|intcomma}}</li>
+        <li class="list-group-item">Category: {{listing_data.category}}</li>
+        <li class="list-group-item">Seller: {{listing_data.user}}</li>
+            <li class="list-group-item"> 
+            <img src="{{listing_data.image}}" width="300">
+        </li>
+    </ul>
+    
+    {% if user.is_authenticated %}
+        <div class="watchlist">
+        {% if match == True %}
+        <a href="{% url 'remove_watchlist'  listing_id=listing_data.id %}" class="btn btn-danger">Remove from Watchlist</a>
+        {% else %}
+        <a href="{% url 'add_watchlist'  listing_id=listing_data.id %}" class="btn btn-success">Include to Watchlist</a>
+        {% endif %}
+        </div>
+        <form action="{% url 'new_bid' listing_id=listing_data.id %}" method="post">
+            {% csrf_token %}
+            <div class="form-group row">
+                <div class="col-4">
+                <input type="number" placeholder="Your Bid" name="bid" class="form-control">
+                </div>
+                <input type="submit" value="Bid" class="btn btn-primary">
+            </div>
+        </form>
+        
+        <form action="{% url 'comment' listing_id=listing_data.id %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <textarea name="comment" class="form-control"></textarea>
+            </div>
+            <input type="submit" value="Comment" class="btn btn-primary">
+        </form>
+
+
+
+
+
+
+    {% endif %}
+    <h1>Comments</h1>
+    {% for comments in all_comments %}
+    <div class="container">
+        
+        <div class="row">
+            <div class="col-sm-5 col-md-6 col-12 pb-4">
+                
+                <div class="comment mt-4 text-justify float-left">
+                    <h4>{{comments.user}}</h4>
+                    <span>{{comments.date}}</span>
+                    <br>
+                    <p>{{comments.comments}}</p>
+                </div>
+            </div>
+        </div>    
+    </div>    
+    {% endfor %}
+
+    <!--{% for comments in all_comments %}
+
+    {{comments.comments}} {{comments.user}} {{comments.date}}
+   
+    {% endfor %}-->
+
+{% endblock %}
