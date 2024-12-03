@@ -1,0 +1,37 @@
+{% extends "trip_planner/layout.html" %}
+
+{% block body %}
+{% if trips_with_budgets %}
+    {% for item in trips_with_budgets %}
+    
+    <a href="{% url 'trip' id=item.trip.id %}" class="link_index">
+        <div class="row trip_index_row">
+            <div class="col-4">
+                <h1>{{ item.trip }}</h1>
+            </div>
+            <div class="col-4">
+                <h5>{{ item.trip.start_date|date:"F d" }} to {{ item.trip.end_date }}</h5>
+            </div>
+
+            <div class="col-2">
+                <img 
+                  src="{% if item.trip.image %}{{ item.trip.image.url }}{% else %}/media/images/default.jpg{% endif %}" 
+                  class="img_trip" 
+                  alt="Trip Image">
+            </div>
+
+            <div class="col-2">
+                <h5>Budget: {{ item.budget }}</h5>
+            </div>
+        </div>
+    </a>
+
+    <!-- Edit button -->
+     
+    <a href="{% url 'edit_trip' id=item.trip.id %}" class="btn btn-secondary btn-sm" style="font-size: 12px; padding: 2px 6px;">Edit</a>
+
+    {% endfor %}
+{% else %}
+    {{ message }} <a href="{% url 'new_trip' %}">Create new Trip</a>
+{% endif %}
+{% endblock %}

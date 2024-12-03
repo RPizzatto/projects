@@ -1,0 +1,79 @@
+{% extends "trip_planner/layout.html" %}
+
+{% block body %}
+
+<div id="Hotel" class="form-container">
+    
+   
+    
+   
+    <form method="post" action="{% url 'edit_trip' id=user_trip.id %}" enctype="multipart/form-data" onsubmit="return validateDates()">
+        {% csrf_token %}
+        <div class="form-group py-2">
+            <input 
+                type="text" 
+                name="trip_title" 
+                placeholder="Where are you going next?" 
+                required 
+                class="form-control" 
+                value="{{ user_trip.title }}"  
+            
+        </div>
+        
+        <div class="form-group form-row">
+            <div class="col-2">
+                <label for="start-date">Select a starting date:</label>
+            </div>
+            <div class="col-2">
+                <input 
+                    type="date" 
+                    id="start-date" 
+                    name="start_date" 
+                    required 
+                    class="form-control" 
+                    value="{{ user_trip.start_date|date:'Y-m-d' }}" <!-- Populate start date -->
+                
+            </div>
+        </div>
+        
+        <div class="form-group form-row">
+            <div class="col-2">
+                <label for="end-date">Select an end date:</label>
+            </div>
+            <div class="col-2">
+                <input 
+                    type="date" 
+                    id="end-date" 
+                    name="end_date" 
+                    required 
+                    class="form-control" 
+                    value="{{ user_trip.end_date|date:'Y-m-d' }}" <!-- Populate end date -->
+                
+            </div>
+        </div>
+        
+        <div class="form-group form-row">
+            <div class="col-2">
+                <label for="imageUpload">Upload an inspiration image:</label>
+            </div>
+            <div class="col-3">
+                <input 
+                    type="file" 
+                    id="imageUpload" 
+                    name="image" 
+                    accept="image/*" 
+                    class="form-control-file"
+                >
+                <!-- Show the current image -->
+                {% if user_trip.image %}
+                    <p>Current Image:</p>
+                    <img src="{{ user_trip.image.url }}" alt="Trip Image" style="width: 150px; height: auto;">
+                {% endif %}
+            </div>
+        </div>
+        
+        <input type="submit" value="Edit" class="btn btn-primary">
+    </form>
+</div>
+
+{% endblock %}

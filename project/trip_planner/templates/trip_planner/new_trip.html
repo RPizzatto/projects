@@ -1,0 +1,55 @@
+{% extends "trip_planner/layout.html" %}
+
+{% block body %}
+
+<h2>Create your next Adventure!</h2>
+
+<form action="{% url 'new_trip' %}" method="post" enctype="multipart/form-data" onsubmit="return validateDates()">
+    {% csrf_token %}
+    <div class="form-group py-2">
+        <input type="text" name="trip_title" placeholder="Where are you going next?" required class="form-control">
+    </div>
+    
+    <div class="form-group form-row">
+        <div class="col-2">
+            <label for="start-date">Select a starting date:</label>
+        </div>
+        <div class="col-2">
+            <input type="date" id="start-date" name="start_date" required class="form-control">
+        </div>
+    </div>
+    <div class="form-group form-row">
+        <div class="col-2">
+            <label for="end-date">Select an end date:</label>
+        </div>
+        <div class="col-2">
+            <input type="date" id="end-date" name="end_date" required class="form-control">
+        </div>
+    </div>
+    
+    <div class="form-group form-row">
+        <div class="col-2">
+            <label for="imageUpload">Upload an inspiration image:</label>
+        </div>
+        <div class="col-3">
+            <input type="file" id="imageUpload" name="image" accept="image/*" class="form-control-file">
+        </div>
+    </div>
+    
+    <input type="submit" value="Submit" class="btn btn-primary">
+</form>
+
+<script>
+function validateDates() {
+    const startDate = new Date(document.querySelector('#start-date').value);
+    const endDate = new Date(document.querySelector('#end-date').value);
+    
+    if (endDate < startDate) {
+        alert('End date cannot be earlier than the start date.');
+        return false; // Prevent form submission
+    }
+    return true; // Allow form submission
+}
+</script>
+
+{% endblock %}

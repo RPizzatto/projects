@@ -1,0 +1,66 @@
+{% extends "trip_planner/layout.html" %}
+
+{% block body %}
+
+{% if details.category.type == "Restaurant" %}
+
+    <ul class="list-group">
+        <li class="list-group-item">Date: {{details.restaurant_date_time}}</li>
+        <li class="list-group-item">Restaurant: {{details.restaurant_name}}</li>
+        <li class="list-group-item">City: {{details.city}}</li>
+        <li class="list-group-item">Price: {{details.price}}</li>
+        <li class="list-group-item">Notes: {{details.notes}}</li>
+        <li class="list-group-item">Image: {{details.image}}</li>
+        <a href="{% url 'edit_activity' category=details.category.type id=details.id %}" class="btn btn-primary">Edit</a>
+
+
+    </ul>
+{% elif details.category.type == "Hotel" %}
+
+<ul class="list-group">
+    <li class="list-group-item">Hotel: {{details.name}}</li>
+    <li class="list-group-item">Entry Date: {{details.entry_date}}</li>
+    <li class="list-group-item">Exit Date: {{details.exit_date}}</li>
+    <li class="list-group-item">Number of Nights: {{details.number_of_nights}}</li>
+    <li class="list-group-item">City: {{details.city}}</li>
+    <li class="list-group-item">Price: {{details.price}}</li>
+    <li class="list-group-item">Notes: {{details.contact}}</li>
+    <li class="list-group-item">Image: {{details.image}}</li>
+    
+    
+    <a href="{% url 'edit_activity' category=details.category.type id=details.id %}" class="btn btn-primary">Edit</a>
+    
+</ul>
+
+{% elif details.category.type == "Transportation" %}
+
+<ul class="list-group">
+    <li class="list-group-item">From: {{details.departure_airport}} to {{details.arrival_airport}}</li>
+    <li class="list-group-item">Airline: {{details.airline}}</li>
+    <li class="list-group-item">Departure Date & Time: {{details.departure_date_time}}</li>
+    <li class="list-group-item">Arrival Date & Time: {{details.arrival_date_time}}</li>
+    <li class="list-group-item">Flight Number: {{details.flight_number}}</li>
+    <li class="list-group-item">Price: {{details.price}}</li>
+    <li class="list-group-item">Notes: {{details.notes}}</li>
+    <li class="list-group-item">Reservation Code: {{details.reservation_code}}</li>
+    <a href="{% url 'edit_activity' category=details.category.type id=details.id %}" class="btn btn-primary">Edit</a>
+</ul>
+
+{% elif details.category.type == "Activity" %}
+
+<ul class="list-group">
+    <li class="list-group-item">Name: {{details.title}}</li>
+    <li class="list-group-item">Date: {{details.activity_date_time}}</li>
+    <li class="list-group-item">City: {{details.city}}</li>
+    <li class="list-group-item">Price: {{details.price}}</li>
+    <li class="list-group-item">Notes: {{details.contact}}</li>
+    <li class="list-group-item">Image: {{details.image}}</li>
+    <a href="{% url 'edit_activity' category=details.category.type id=details.id %}" class="btn btn-primary">Edit</a>
+</ul>
+
+
+{% endif %}
+
+
+
+{% endblock %}

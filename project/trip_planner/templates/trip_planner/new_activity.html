@@ -1,0 +1,272 @@
+{% extends "trip_planner/layout.html" %}
+
+{% block body %}
+
+
+
+<style>
+    /* Hide all forms initially */
+    .form-container {
+        display: none;
+    }
+</style>
+</head>
+<body>
+
+
+<!-- Dropdown menu -->
+<label for="form-select">What are we doing?</label>
+<select id="form-select" onchange="showForm()">
+    <option value="">Select an option</option>
+    {% for category in categories_list %}
+    <option value="{{category.type}}">{{category.type}}</option>
+    {% endfor %}
+
+</select>
+
+<!-- Form containers -->
+<div id="Hotel" class="form-container">
+    
+    <form method="post" action="{% url 'new_activity' id=id %}"   enctype="multipart/form-data" onsubmit="return validateDates()">
+        {% csrf_token %}
+        <input type="hidden" name="category" value="Hotel">
+        <div class="form-group py-2">
+            <label for="email1">Hotel Name</label>
+            <input type="text" name="hotel_name" required class="form-control">
+        </div>
+        <div class="form-group py-2">
+            <label for="email1">Hotel City</label>
+            <input type="text" name="hotel_city" required class="form-control">
+        </div>
+        <div class="form-group form-row">
+            <div class="col-2">
+                <label for="start-date">Select an entry date:</label>
+            </div>
+            <div class="col-2">
+                <input type="date" id="start-date" name="start_date" required class="form-control">
+            </div>
+        </div>
+        <div class="form-group form-row">
+            <div class="col-2">
+                <label for="end-date">Select an exit date:</label>
+            </div>
+            <div class="col-2">
+                <input type="date" id="end-date" name="end_date" required class="form-control">
+            </div>
+        </div>
+        <div class="form-group py-2">
+            <label for="email1">Total Price</label>
+            <input type="number" id="budget" name="budget" min="0" class="form-control">
+        </div>
+        <div class="form-group py-2">
+            <label for="contacts">Contact</label>
+            <input type="text" name="hotel_contact" class="form-control">
+        </div>
+        <div class="form-group form-row">
+            <div class="col-2">
+                <label for="imageUpload">Image:</label>
+            </div>
+            <div class="col-3">
+                <input type="file" id="imageUpload" name="image" accept="image/*" class="form-control-file">
+            </div>
+        </div>
+                
+        <button type="submit" class="btn btn-primary">Add Hotel</button>
+    </form>
+</div>
+
+
+
+<div id="Transportation" class="form-container">
+    
+    <form method="post" action="{% url 'new_activity' id=id %}"  onsubmit="return validateDates()">
+        {% csrf_token %}
+        <input type="hidden" name="category" value="Transportation">
+        <div class="form-group py-2">
+            <label for="company">Company</label>
+            <input type="text" name="company" required class="form-control">
+        </div>
+        <div class="form-group py-2">
+            <label for="company">Reservation Code</label>
+            <input type="text" name="reservation_number"  class="form-control">
+        </div>
+        <div class="form-group py-2">
+            <label for="company">Flight/Train Number</label>
+            <input type="text" name="flight_number"  class="form-control">
+        </div>
+        <div class="form-group py-2">
+            <label for="email1">Departure City</label>
+            <input type="text" name="departure_city" required class="form-control">
+        </div>
+        <div class="form-group form-row">
+            <div class="col-2">
+                <label for="departure_date">Departure date:</label>
+            </div>
+            <div class="col-2">
+                <input type="date" id="start-date" name="departure_date" required class="form-control">
+            </div>
+            <div class="col-2">
+                <label for="arrival_date">Departure Time:</label>
+            </div>
+            <div class="col-2">
+                <input type="time" id="start-time" name="departure_time"  class="form-control">
+            </div>
+        </div>
+        <div class="form-group py-2">
+            <label for="email1">Arrival City</label>
+            <input type="text" name="arrival_city" required class="form-control">
+        </div>
+        
+        <div class="form-group form-row">
+            <div class="col-2">
+                <label for="arrival_date">Arrival date:</label>
+            </div>
+            <div class="col-2">
+                <input type="date" id="end-date" name="arrival_date" required class="form-control">
+            </div>
+            <div class="col-2">
+                <label for="arrival_date">Arrival Time:</label>
+            </div>
+            <div class="col-2">
+                <input type="time" id="arrival-time" name="arrival_time"  class="form-control">
+            </div>
+        </div>
+        <div class="form-group py-2">
+            <label for="email1">Total Price</label>
+            <input type="number" id="budget" name="budget" min="0" class="form-control">
+        </div>
+        <div class="form-group py-2">
+            <label for="contacts">Notes</label>
+            <input type="text" name="notes" class="form-control">
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Add Flight/Train</button>
+    </form>
+</div>
+
+
+
+<div id="Restaurant" class="form-container" enctype="multipart/form-data">
+    
+    <form method="post" action="{% url 'new_activity' id=id %}" onsubmit="return validateDates()">
+        {% csrf_token %}
+        <input type="hidden" name="category" value="Restaurant">
+        <div class="form-group py-2">
+            <label for="company">Name</label>
+            <input type="text" name="restaurant_name" required class="form-control">
+        </div>
+        <div class="form-group py-2">
+            <label for="company">City</label>
+            <input type="text" name="restaurant_city" required class="form-control">
+        </div>
+        <div class="form-group form-row">
+            <div class="col-1">
+                <label for="departure_date">Date:</label>
+            </div>
+            <div class="col-2">
+                <input type="date" id="date" name="restaurant_date" required class="form-control">
+            </div>
+            <div class="col-1">
+                <label for="arrival_date">Time:</label>
+            </div>
+            <div class="col-2">
+                <input type="time" id="start-time" name="restaurant_time"  class="form-control">
+            </div>
+        </div>
+        
+            <label for="email1">Total Price</label>
+            <input type="number" id="budget" name="restaurant_price" min="0" class="form-control">
+        
+        <div class="form-group py-2">
+            <label for="contacts">Notes</label>
+            <input type="text" name="restaurant_notes" class="form-control">
+        </div>
+        <div class="form-group form-row">
+            <div class="col-2">
+                <label for="imageUpload">Upload an inspiration image:</label>
+            </div>
+            <div class="col-3">
+                <input type="file" id="imageUpload" name="restaurant_image" accept="image/*" class="form-control-file">
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Save Restaurant</button>
+    </form>
+</div>
+
+<div id="Activity" class="form-container">
+    
+    <form method="post" action="{% url 'new_activity' id=id %}" onsubmit="return validateDates()" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="category" value="Activity">
+        <div class="form-group py-2">
+            <label for="company">What are we doing?</label>
+            <input type="text" name="activity_name" required class="form-control">
+        </div>
+        <div class="form-group py-2">
+            <label for="company">City</label>
+            <input type="text" name="activity_city" required class="form-control">
+        </div>
+        <div class="form-group form-row">
+            <div class="col-1">
+                <label for="departure_date">Date:</label>
+            </div>
+            <div class="col-2">
+                <input type="date" id="date" name="activity_date" required class="form-control">
+            </div>
+            <div class="col-1">
+                <label for="arrival_date">Time:</label>
+            </div>
+            <div class="col-2">
+                <input type="time" id="start-time" name="activity_time" class="form-control">
+            </div>
+        </div>
+        
+            <label for="email1">Total Price</label>
+            <input type="number" id="budget" name="activity_price" min="0" class="form-control">
+        
+        <div class="form-group py-2">
+            <label for="contacts">Notes</label>
+            <input type="text" name="activity_notes" class="form-control">
+        </div>
+        <div class="form-group form-row">
+            <div class="col-2">
+                <label for="imageUpload">Image:</label>
+            </div>
+            <div class="col-3">
+                <input type="file" id="imageUpload" name="activity_image" accept="image/*" class="form-control-file">
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Save Activity</button>
+    </form>
+</div>
+
+<script>
+    function showForm() {
+        // Hide all forms
+        const forms = document.querySelectorAll('.form-container');
+        forms.forEach(form => form.style.display = 'none');
+        
+        // Get the selected value
+        const selectedForm = document.getElementById('form-select').value;
+        
+        // Show the selected form
+        if (selectedForm) {
+            document.getElementById(selectedForm).style.display = 'block';
+        }
+    }
+
+    function validateDates() {
+    const startDate = new Date(document.querySelector('#start-date').value);
+    const endDate = new Date(document.querySelector('#end-date').value);
+    
+    if (endDate < startDate) {
+        alert('End date cannot be earlier than the start date.');
+        return false; // Prevent form submission
+    }
+    return true; // Allow form submission
+}
+</script>
+
+{% endblock %}

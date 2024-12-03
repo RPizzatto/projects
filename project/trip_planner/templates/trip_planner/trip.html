@@ -1,0 +1,79 @@
+{% extends "trip_planner/layout.html" %}
+
+{% block body %}
+
+
+<div class="row trip_top_row align-items-center">
+  <div class="col-2">
+      <h1>{{current_trip.title}}</h1>
+  </div>
+  <div class="col-3">
+      <h5 class="data">{{current_trip.start_date|date:"F d"}} to {{current_trip.end_date}}</h5>
+  </div>
+  <div class="col-2 d-flex justify-content-center align-items-center imagebotao">
+      <img src="{{image}}" class="img_trip" alt="Responsive image">
+  </div>
+  <div class="col-3 d-flex justify-content-center align-items-center divbotao">
+      <a href="{% url 'new_activity' id=current_trip.id %}" class="btn btn-primary botao">New Activity</a>
+  </div>
+  <div class="col-2">
+      <h5>Budget: {{total_budget}}</h5>
+  </div>
+</div>
+
+  <div class="activities">
+    {% for activity in all_activities %}
+      {% if activity.category.type == "Hotel" %}
+        <a href="{% url 'activity_details' category=activity.category.type id=activity.id %}" class="list-group link_index" >
+            <li class="list-group-item">
+              <i class="fa-solid fa-hotel"></i>
+              {{activity.category}}
+              {{activity.city}}
+              Date: {{activity.entry_date}}
+              Name: {{activity.name}}
+              Nights: {{activity.number_of_nights}}
+              
+            </li>
+          </a> 
+      {% elif activity.category.type == "Restaurant" %}
+        <a href="{% url 'activity_details' category=activity.category.type id=activity.id %}" class="list-group link_index">
+          <li class="list-group-item">
+            <i class="fa-solid fa-utensils"></i>
+            {{activity.category}}
+            {{activity.city}}
+            Date: {{activity.restaurant_date_time}}
+            Name: {{activity.restaurant_name}}
+          </li>
+        </a> 
+      {% elif activity.category.type == "Activity" %}
+        <a href="{% url 'activity_details' category=activity.category.type id=activity.id %}" class="list-group link_index">
+          <li class="list-group-item">
+            <i class="fa-solid fa-masks-theater"></i>
+            {{activity.category}}
+            {{activity.city}}
+            Date: {{activity.activity_date_time}}
+            Name: {{activity.title}}
+          </li>
+        </a>
+        {% elif activity.category.type == "Transportation" %}
+        <a href="{% url 'activity_details' category=activity.category.type id=activity.id %}" class="list-group link_index">
+          <li class="list-group-item">
+            <i class="fa-solid fa-plane"></i>
+            {{activity.category}}
+            From: {{activity.departure_airport}} to {{activity.arrival_airport}}
+            Date: {{activity.departure_date_time}}
+           
+          </li>
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+
+
+  
+
+
+
+{% endblock %}
+

@@ -1,0 +1,83 @@
+.body{
+    
+    margin: 15px;
+}
+
+.trip_top_row{
+    border: 1px solid azure;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    background-color: azure;
+    width: 100%;
+    height: 130px;
+    z-index: 100;
+    
+}
+
+.trip_index_row{
+    border: 1px solid azure;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    background-color: azure;
+    width: 100%;
+    height: 130px;
+    margin-top: 20px;
+}
+
+.link_index, .link_index:hover{
+    text-decoration: none;
+    color: inherit;
+    
+}
+
+.img_trip{
+    height: 110px;
+    width: 180px;
+    object-fit: cover;
+}
+
+.activities{
+    top: 210px;
+    position: absolute;
+    margin: 15px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.list-group{
+    width: 600px;
+    margin-bottom: 8px;
+}
+
+.space{
+    margin-top: 70px;
+    
+}
+
+
+
+/* Mobile Screen */
+@media screen and (max-width: 700px) {
+    .botao{
+        width: 50px;
+    }
+    .divbotao{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 10px !important;
+    }
+    .data{
+        font-size: 10px;
+    }
+
+
+
+}
