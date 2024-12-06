@@ -1,7 +1,7 @@
 
 # CS50 Web Projects  
 
-This repository contains my solutions to the projects from Harvard's **CS50’s Web Programming with Python and JavaScript** course. Each project demonstrates a specific set of web development skills, including Django, front-end development, and handling APIs.  
+This repository contains a sample of my projects, including the solutions from Harvard's CS50’s Web Programming with Python and JavaScript course. Each project demonstrates a specific set of web development skills, including back-end and front-end development, as well as handling APIs.
 
 ## Projects  
 
